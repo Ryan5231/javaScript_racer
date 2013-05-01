@@ -1,10 +1,13 @@
+numOfPlayers = 2;
 $(document).ready(function() {
-  var player1 = new Player(player1_id,81,0);
-  var player2 = new Player(player2_id,80,1);
-  var game = new Game(player1, player2, trackLength);
-
+  $.get('/gameinfo/'+gameID).done(function(data){
+  var player1 = new Player(data.player1,81,0);
+  var player2 = new Player(data.player2,80,1);
+  var game = new Game(player1, player2, data.trackLength);
   $(document).on('keyup', function(event) {
-    game.onKeyUp(event.which);
+  game.startTimer();
+  game.onKeyUp(event.which);
+    });
   });
 });
 
@@ -64,6 +67,19 @@ Game.prototype = {
       this.winner = this.player2;
       this.gameTimer();
     }
+    this.endGameInfo();
+  },
+
+  endGameInfo: function() {
+    if (this.winner === null){
+    }else{
+      alert(this.winner.player_id + " has won!");
+      $(document).unbind('keyup');
+      $.ajax({
+        url: "/gameinfo/" + gameID,
+        type: "PUT",
+        data: {player_id : this.winner.player_id, winning_time : this.gameTime}}).done(function(data){alert(data);});
+    }
   },
 
   renderPlayers: function(player){
@@ -73,10 +89,9 @@ Game.prototype = {
   },
 
   startTimer: function(){
-    if (this.isTriggered) {
-      console.log("triggered");
+    if (this.timerTrigger) {
     }else{
-      this.isTriggered = true;
+      this.timerTrigger = true;
       startDate = new Date();
       this.startTime = startDate.getTime();
     }

@@ -1,18 +1,16 @@
+<script src="/js/application.js"></script>
 <div class="container">
     <h1>Ruby Racer SON! v.1.0</h1>
     <p>Instructions:</p>
     <p>Start Game - Press Enter</p>
     <p>Restart Game - Press Space</p>
-    <p>Move Mario - Press 'm'</p>
-    <p>Move Sonic - Press 's'</p>
+    <p>Move Mario - Press 'q'</p>
+    <p>Move Sonic - Press 'p'</p>
     <table class="racer_table">
       
     </table>
 </div>
 
 <script>
-  var numOfPlayers = <%= 2 %>
-  var trackLength = <%= @game_info[:track_length] %>
-  var player1_id = 1
-  var player2_id = 2
+  var gameID = <%= @game_id %>
 </script>
